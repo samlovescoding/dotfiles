@@ -1,0 +1,15 @@
+#!/bin/bash
+# Open a URL as a web app, or focus its window if it is already open.
+# Used by the launcher entries that webapp-sync writes.
+#   webapp-launch <url>
+
+set -euo pipefail
+url=${1:?usage: webapp-launch <url>}
+
+# Hand over to Hyprland so the launch-or-focus logic lives in one place
+# (~/dotfiles/hypr/webapps/index.lua). Fall back to a plain launch.
+lua_url=${url//\\/\\\\}
+lua_url=${lua_url//\"/\\\"}
+if ! hyprctl eval "require(\"overrides.webapps.index\").launch(\"$lua_url\")" >/dev/null 2>&1; then
+  exec chromium --app="$url"
+fi

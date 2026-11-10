@@ -1,0 +1,14 @@
+-- Mouse and touchpad: sensitivity, focus behaviour, scrolling, gestures.
+-- See https://wiki.hypr.land/configuring/core/config-options/ (input section)
+-- Per-device settings: https://wiki.hypr.land/configuring/core/devices/
+
+-- hl.config({
+--     input = {
+--         follow_mouse = 1,
+--         sensitivity  = 0, -- -1.0 - 1.0, 0 means no modification.
+--
+--         touchpad = {
+--             natural_scroll = false,
+--         },
+--     },
+-- })

@@ -1,0 +1,11 @@
+-- Keyboard: layout, variant, options, repeat rate.
+-- See https://wiki.hypr.land/configuring/core/config-options/ (input section)
+-- Keybindings live in keybindings.lua.
+
+-- hl.config({
+--     input = {
+--         kb_layout  = "us",
+--         kb_variant = "",
+--         kb_options = "",
+--     },
+-- })

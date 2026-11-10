@@ -1,0 +1,46 @@
+#!/bin/bash
+# Keep app-launcher entries in line with ~/dotfiles/hypr/webapps/list.lua.
+# Run by Hyprland on start and on every config reload; only ever touches
+# the webapp-*.desktop files and icons it created itself.
+#   webapp-sync 'Name|url|window-class' ...
+
+set -euo pipefail
+
+app_dir="$HOME/.local/share/applications"
+icon_dir="$HOME/.local/share/icons/webapps"
+launch="$(dirname "$(readlink -f "$0")")/webapp-launch"
+mkdir -p "$app_dir" "$icon_dir"
+
+keep=()
+for entry in "$@"; do
+  IFS='|' read -r name url class <<<"$entry"
+  slug=$(tr '[:upper:]' '[:lower:]' <<<"$name" | tr -cs 'a-z0-9' '-' | sed 's/^-//; s/-$//')
+  desktop="$app_dir/webapp-$slug.desktop"
+  icon="$icon_dir/$slug.png"
+  keep+=("$desktop")
+
+  if [[ ! -s $icon ]]; then
+    host=$(sed -E 's#^[a-zA-Z][a-zA-Z0-9+.-]*://([^/?#]+).*#\1#' <<<"$url")
+    curl -fsSL --max-time 10 -o "$icon" "https://www.google.com/s2/favicons?domain=$host&sz=128" || rm -f "$icon"
+  fi
+
+  cat >"$desktop" <<EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=$name
+Comment=$name web app
+Exec=$launch $url
+Icon=$icon
+StartupWMClass=$class
+Terminal=false
+EOF
+done
+
+for existing in "$app_dir"/webapp-*.desktop; do
+  [[ -e $existing ]] || continue
+  if [[ ! " ${keep[*]} " == *" $existing "* ]]; then
+    slug=$(basename "$existing" .desktop); slug=${slug#webapp-}
+    rm -f "$existing" "$icon_dir/$slug.png"
+  fi
+done
