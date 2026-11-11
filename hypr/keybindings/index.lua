@@ -9,3 +9,5 @@ require("overrides.keybindings.workspaces")
 require("overrides.keybindings.media")
 require("overrides.keybindings.system")
 require("overrides.keybindings.webapps")
+require("overrides.keybindings.chromium")
+require("overrides.keybindings.ai") -- AI PLAYGROUND (dictation, gpu-free); see /mnt/ai/docs/notes/voxtype.md

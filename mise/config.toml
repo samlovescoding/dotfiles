@@ -1,0 +1,17 @@
+# Global tool versions, managed by mise (https://mise.jdx.dev).
+# ~/.config/mise is a symlink to this directory.
+#   mise up        update everything within these version ranges
+#   mise use -g    add or change a tool
+# A project can pin its own versions with a mise.toml in its root.
+
+[tools]
+node   = "24"
+bun    = "latest"
+rust   = "stable"
+go     = "latest"
+ruby   = "4.0"
+yt-dlp = "latest"
+
+[settings]
+# Honour .nvmrc, .ruby-version, .go-version and friends in projects.
+idiomatic_version_file_enable_tools = ["node", "ruby", "go", "rust"]

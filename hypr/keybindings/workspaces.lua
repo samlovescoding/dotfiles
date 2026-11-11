@@ -22,3 +22,7 @@ hl.bind(superMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:ma
 -- Scroll through existing workspaces with superMod + scroll
 hl.bind(superMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(superMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
+
+-- Cycle through workspaces that have windows open with superMod + Tab
+hl.bind(superMod .. " + Tab",         hl.dsp.focus({ workspace = "e+1" }))
+hl.bind(superMod .. " + SHIFT + Tab", hl.dsp.focus({ workspace = "e-1" }))

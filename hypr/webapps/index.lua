@@ -35,7 +35,8 @@ end
 local function sync()
     local args = {}
     for _, app in ipairs(M.apps) do
-        args[#args + 1] = shell_quote(app.name .. "|" .. app.url .. "|" .. M.window_class(app.url))
+        args[#args + 1] = shell_quote(table.concat(
+            { app.name, app.url, M.window_class(app.url), app.icon or "" }, "|"))
     end
     hl.exec_cmd(bin .. "/webapp-sync " .. table.concat(args, " "))
 end

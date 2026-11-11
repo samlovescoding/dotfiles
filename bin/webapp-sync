@@ -2,7 +2,7 @@
 # Keep app-launcher entries in line with ~/dotfiles/hypr/webapps/list.lua.
 # Run by Hyprland on start and on every config reload; only ever touches
 # the webapp-*.desktop files and icons it created itself.
-#   webapp-sync 'Name|url|window-class' ...
+#   webapp-sync 'Name|url|window-class|icon-url' ...   (icon-url may be empty)
 
 set -euo pipefail
 
@@ -13,13 +13,15 @@ mkdir -p "$app_dir" "$icon_dir"
 
 keep=()
 for entry in "$@"; do
-  IFS='|' read -r name url class <<<"$entry"
+  IFS='|' read -r name url class icon_url <<<"$entry"
   slug=$(tr '[:upper:]' '[:lower:]' <<<"$name" | tr -cs 'a-z0-9' '-' | sed 's/^-//; s/-$//')
   desktop="$app_dir/webapp-$slug.desktop"
   icon="$icon_dir/$slug.png"
   keep+=("$desktop")
 
-  if [[ ! -s $icon ]]; then
+  if [[ ! -s $icon && -n $icon_url ]]; then
+    curl -fsSL --max-time 10 -o "$icon" "$icon_url" || rm -f "$icon"
+  elif [[ ! -s $icon ]]; then
     host=$(sed -E 's#^[a-zA-Z][a-zA-Z0-9+.-]*://([^/?#]+).*#\1#' <<<"$url")
     curl -fsSL --max-time 10 -o "$icon" "https://www.google.com/s2/favicons?domain=$host&sz=128" || rm -f "$icon"
   fi

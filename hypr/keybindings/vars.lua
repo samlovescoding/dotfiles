@@ -10,5 +10,6 @@ return {
     hyperMod    = "SUPER + CTRL + ALT + SHIFT",
     terminal    = "kitty",
     fileManager = "dolphin",
+    browser     = "chromium",
     menu        = "wofi --show drun",
 }
